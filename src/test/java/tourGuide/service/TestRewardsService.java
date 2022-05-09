@@ -1,11 +1,11 @@
 package tourGuide.service;
 
-import tourGuide.model.location.Attraction;
-import tourGuide.model.location.VisitedLocation;
+import tourGuide.entity.location.Attraction;
+import tourGuide.entity.location.VisitedLocation;
 import org.junit.Test;
 import tourGuide.helper.InternalTestHelper;
-import tourGuide.model.User;
-import tourGuide.model.UserRewardModel;
+import tourGuide.entity.User;
+import tourGuide.entity.UserRewardModel;
 import tourGuide.microService.GpsUtilMicroService;
 import tourGuide.microService.RewardsMicroService;
 import tourGuide.microService.TripPricerMicroService;

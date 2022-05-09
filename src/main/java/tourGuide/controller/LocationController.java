@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tourGuide.exception.UserNameNotFoundException;
-import tourGuide.model.User;
-import tourGuide.model.location.VisitedLocation;
+import tourGuide.entity.User;
+import tourGuide.entity.location.VisitedLocation;
 import tourGuide.service.InternalTestService;
 import tourGuide.service.TourGuideService;
 

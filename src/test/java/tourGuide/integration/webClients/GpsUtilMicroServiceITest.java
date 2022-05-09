@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import tourGuide.exception.UUIDException;
-import tourGuide.model.location.Attraction;
+import tourGuide.entity.location.Attraction;
 import tourGuide.service.TourGuideService;
 import tourGuide.microService.GpsUtilMicroService;
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tourGuide.exception.UserNameNotFoundException;
 import tourGuide.service.InternalTestService;
 import tourGuide.service.TourGuideService;
-import tourGuide.model.trip.Provider;
+import tourGuide.entity.trip.Provider;
 
 import java.util.List;
 

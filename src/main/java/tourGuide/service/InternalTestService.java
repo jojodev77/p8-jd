@@ -4,9 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import tourGuide.helper.InternalTestHelper;
-import tourGuide.model.User;
-import tourGuide.model.location.Location;
-import tourGuide.model.location.VisitedLocation;
+import tourGuide.entity.User;
+import tourGuide.entity.location.Location;
+import tourGuide.entity.location.VisitedLocation;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

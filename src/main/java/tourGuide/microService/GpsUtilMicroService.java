@@ -7,8 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import tourGuide.model.location.Attraction;
-import tourGuide.model.location.VisitedLocation;
+import tourGuide.entity.location.Attraction;
+import tourGuide.entity.location.VisitedLocation;
 
 import java.util.Arrays;
 import java.util.List;

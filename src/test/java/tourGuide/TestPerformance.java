@@ -1,13 +1,13 @@
 package tourGuide;
 
 import tourGuide.exception.UUIDException;
-import tourGuide.model.UserRewardModel;
-import tourGuide.model.location.Attraction;
-import tourGuide.model.location.VisitedLocation;
+import tourGuide.entity.UserRewardModel;
+import tourGuide.entity.location.Attraction;
+import tourGuide.entity.location.VisitedLocation;
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Test;
 import tourGuide.helper.InternalTestHelper;
-import tourGuide.model.User;
+import tourGuide.entity.User;
 import tourGuide.service.InternalTestService;
 import tourGuide.service.RewardsService;
 import tourGuide.service.TourGuideService;

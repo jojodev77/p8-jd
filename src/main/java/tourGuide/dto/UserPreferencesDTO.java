@@ -1,6 +1,6 @@
 package tourGuide.dto;
 
-import tourGuide.model.UserPreferencesModel;
+import tourGuide.entity.UserPreferencesModel;
 
 public class UserPreferencesDTO {
 
