@@ -1,11 +1,11 @@
 package tourGuide;
 
+import org.junit.jupiter.api.Test;
 import tourGuide.exception.UUIDException;
 import tourGuide.entity.UserRewardModel;
 import tourGuide.entity.location.Attraction;
 import tourGuide.entity.location.VisitedLocation;
 import org.apache.commons.lang3.time.StopWatch;
-import org.junit.Test;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.entity.User;
 import tourGuide.service.InternalTestService;
@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestPerformance {
 

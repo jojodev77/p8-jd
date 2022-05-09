@@ -2,8 +2,7 @@ package tourGuide.integration.webClients;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -14,7 +13,6 @@ import tourGuide.microService.RewardsMicroService;
 import java.util.UUID;
 
 @SpringBootTest
-@RunWith(SpringRunner.class)
 //@ActiveProfiles("test")
 public class RewardsMicroServiceITest {
 

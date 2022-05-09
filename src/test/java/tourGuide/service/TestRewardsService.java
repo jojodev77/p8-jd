@@ -1,8 +1,8 @@
 package tourGuide.service;
 
+import org.junit.jupiter.api.Test;
 import tourGuide.entity.location.Attraction;
 import tourGuide.entity.location.VisitedLocation;
-import org.junit.Test;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.entity.User;
 import tourGuide.entity.UserRewardModel;
@@ -14,8 +14,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestRewardsService {
 

@@ -1,11 +1,9 @@
 package tourGuide.integration;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,9 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
 @SpringBootTest
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TourGuideControllerITest {
 
     private MockMvc mockMvc;
@@ -36,7 +32,7 @@ public class TourGuideControllerITest {
     @Autowired
     private WebApplicationContext webContext;
 
-    @Before
+    @BeforeAll
     public void setupMockmvc() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webContext).build();
     }
@@ -48,7 +44,7 @@ public class TourGuideControllerITest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
-        Assert.assertTrue(result.getResponse().getContentAsString().contains(response));
+      Assertions.assertTrue(result.getResponse().getContentAsString().contains(response));
     }
 
     @Test

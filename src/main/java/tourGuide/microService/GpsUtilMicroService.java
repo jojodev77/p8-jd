@@ -1,5 +1,6 @@
 package tourGuide.microService;
 
+import gpsUtil.GpsUtil;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,7 +19,7 @@ import java.util.UUID;
 public class GpsUtilMicroService {
 
     // Declare the base url (for docker deployment)
-    private final String BASE_URL = "http://gps:8081";
+    private final String BASE_URL = "http://localhost:8081";
     // Declare the base url (for localhost)
     private final String BASE_URL_LOCALHOST = "http://localhost:8081";
     // Declare the path to UserLocation
@@ -40,7 +41,6 @@ public class GpsUtilMicroService {
     }
 
     public VisitedLocation getUserLocationWebClient(UUID userId) {
-
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();

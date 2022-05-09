@@ -1,9 +1,8 @@
 package tourGuide.integration;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserControllerITest {
 
@@ -33,7 +31,7 @@ public class UserControllerITest {
     @Autowired
     private WebApplicationContext webContext;
 
-    @Before
+    @BeforeAll
     public void setupMockmvc() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webContext).build();
     }
@@ -74,6 +72,6 @@ public class UserControllerITest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
-        Assert.assertFalse(userPreferencesDTO.getNumberOfAdults() == user.getUserPreferences().getNumberOfAdults());
+      Assertions.assertFalse(userPreferencesDTO.getNumberOfAdults() == user.getUserPreferences().getNumberOfAdults());
     }
 }

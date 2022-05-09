@@ -1,7 +1,6 @@
 package tourGuide.service;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import tourGuide.dto.UserPreferencesDTO;
 import tourGuide.exception.UUIDException;
 import tourGuide.helper.InternalTestHelper;
@@ -18,8 +17,9 @@ import tourGuide.microService.TripPricerMicroService;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class TestTourGuideService {
 
@@ -183,12 +183,10 @@ public class TestTourGuideService {
 		UUID userUUID = UUID.fromString("987b1312-768d-41e1-90c1-e62da7c93739");
 		User user = new User(userUUID, "internalUser2", "1243456",
 				"internalUser2@Gmail.com");
-		Assert.assertEquals(user.getUserPreferences().getNumberOfAdults(), 1);
-		Assert.assertNotEquals(user.getUserPreferences().getNumberOfAdults(),
-				userPreferencesDTO.getNumberOfAdults());
+    assertEquals(user.getUserPreferences().getNumberOfAdults(), 1);
 		//UserModel user= getUser(userPreferencesDTO.getUsername());
 		user.setUserPreferences(new UserPreferencesModel(userPreferencesDTO));
-		Assert.assertEquals(user.getUserPreferences().getNumberOfAdults(),
+	assertEquals(user.getUserPreferences().getNumberOfAdults(),
 				userPreferencesDTO.getNumberOfAdults());
 	}
 }
