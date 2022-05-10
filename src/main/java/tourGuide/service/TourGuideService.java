@@ -8,6 +8,8 @@ import tourGuide.entity.*;
 import tourGuide.entity.location.Attraction;
 import tourGuide.entity.location.VisitedLocation;
 import tourGuide.entity.trip.Provider;
+import tourGuide.exception.UserNameNotFoundException;
+import tourGuide.exception.UserNotPresent;
 import tourGuide.tracker.Tracker;
 import tourGuide.microService.GpsUtilMicroService;
 import tourGuide.microService.TripPricerMicroService;
@@ -65,7 +67,11 @@ public class TourGuideService {
 	 * @return a user
 	 */
 	public User getUser(String userName) {
-		return internalTestService.internalUserMap.get(userName);
+		if (userName == null) {
+      throw new UserNameNotFoundException(userName);
+    }
+
+    return internalTestService.internalUserMap.get(userName);
 	}
 
 	/**
@@ -93,6 +99,9 @@ public class TourGuideService {
 	 * @return a visitedLocation
 	 */
 	public VisitedLocation getUserVisitedLocation(User user) {
+    if (user == null) {
+      throw  new UserNotPresent();
+    }
 		VisitedLocation visitedLocation = (user.getVisitedLocations().size() > 0) ?
 			user.getLastVisitedLocation() :
 			trackUserLocation(user);
@@ -105,6 +114,9 @@ public class TourGuideService {
 	 * @return list of Provider
 	 */
 	public List<Provider> getTripDeals(User user) {
+    if (user == null) {
+      throw  new UserNotPresent();
+    }
 		int cumulativeRewardPoints = user.getUserRewards().stream().mapToInt(i -> i.getRewardPoints()).sum();
 
 		UUID userId = user.getUserId();
@@ -122,6 +134,9 @@ public class TourGuideService {
 	 * @return the visited location of the random location of user
 	 */
 	public VisitedLocation trackUserLocation(User user) {
+    if (user == null) {
+      throw  new UserNotPresent();
+    }
 		UUID userId = user.getUserId();
 		VisitedLocation visitedLocation = gpsUtilMicroService.getUserLocationWebClient(userId);
 		user.addToVisitedLocations(visitedLocation);

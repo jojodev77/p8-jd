@@ -6,6 +6,7 @@ import tourGuide.entity.location.VisitedLocation;
 import org.springframework.stereotype.Service;
 import tourGuide.entity.User;
 import tourGuide.entity.UserRewardModel;
+import tourGuide.exception.UserNotPresent;
 import tourGuide.microService.GpsUtilMicroService;
 import tourGuide.microService.RewardsMicroService;
 
@@ -47,6 +48,9 @@ public class RewardsService {
 	 * @param user the user model
 	 */
 	public void calculateRewards(User user) {
+    if (user == null) {
+      throw  new UserNotPresent();
+    }
 		CopyOnWriteArrayList<VisitedLocation> userLocations = new CopyOnWriteArrayList<>();
 		List<Attraction> attractions = new CopyOnWriteArrayList<>();
 
@@ -91,6 +95,9 @@ public class RewardsService {
 	 * @return int of a reward point
 	 */
 	public int getRewardPoints(Attraction attraction, User user) {
+    if (user == null) {
+      throw  new UserNotPresent();
+    }
 		UUID attractionId = attraction.attractionId;
 		UUID userId = user.getUserId();
 		return rewardsMicroService.getRewardPointsWebClient(attractionId, userId);

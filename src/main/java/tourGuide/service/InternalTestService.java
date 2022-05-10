@@ -3,6 +3,7 @@ package tourGuide.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tourGuide.exception.UserNotPresent;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.entity.User;
 import tourGuide.entity.location.Location;
@@ -45,6 +46,9 @@ public class InternalTestService {
 	 * @param user
 	 */
 	public void addUser(User user) {
+    if (user == null) {
+      throw  new UserNotPresent();
+    }
 		if (!internalUserMap.containsKey(user.getUserName())) {
 			internalUserMap.put(user.getUserName(), user);
 		}
@@ -55,6 +59,9 @@ public class InternalTestService {
 	 * @param user
 	 */
 	private void generateUserLocationHistory(User user) {
+    if (user == null) {
+      throw  new UserNotPresent();
+    }
 		IntStream.range(0, 3).forEach(i-> {
 			user.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));
 		});
