@@ -4,20 +4,26 @@ services:
     ports:
       - 8085:8085
     depends_on:
-      - gps
-      - rewards
-      - pricer
-  gps:
+      - gpsutilMicroService
+      - rewardsMicroService
+      - pricerMicroService
+      - tourguideServer
+  gpsutilMicroService:
     image: gps-util:1.0.0
     ports:
       - 8081:8081
 
-  rewards:
+  rewardsMicroService:
     image: rewards-central:1.0.0
     ports:
       - 8082:8082
 
-  pricer:
+  pricerMicroService:
     image: trip-pricer:1.0.0
     ports:
     - 8083:8083
+
+  tourguideServer:
+    image: tourGuide-server:1.0.0
+    ports:
+      - 8086:8086
