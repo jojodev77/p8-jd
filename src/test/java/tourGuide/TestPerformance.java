@@ -1,5 +1,6 @@
 package tourGuide;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import tourGuide.exception.UUIDException;
 import tourGuide.entity.UserRewardModel;
@@ -15,10 +16,7 @@ import tourGuide.microService.GpsUtilMicroService;
 import tourGuide.microService.RewardsMicroService;
 import tourGuide.microService.TripPricerMicroService;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -47,7 +45,10 @@ public class TestPerformance {
      *     highVolumeGetRewards: 100,000 users within 20 minutes:
 	 *          assertTrue(TimeUnit.MINUTES.toSeconds(20) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
 	 */
-
+  @BeforeAll()
+  public static void Setup() {
+    Locale.setDefault(new Locale("us"));
+  }
 
 	@Test
 	public void highVolumeTrackLocation() throws UUIDException {

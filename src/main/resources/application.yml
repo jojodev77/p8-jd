@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: TourGuide-microService
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8086/eureka

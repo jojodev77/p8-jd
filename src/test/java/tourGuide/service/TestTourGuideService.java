@@ -1,5 +1,6 @@
 package tourGuide.service;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import tourGuide.dto.UserPreferencesDTO;
 import tourGuide.exception.UUIDException;
@@ -15,6 +16,7 @@ import tourGuide.microService.RewardsMicroService;
 import tourGuide.microService.TripPricerMicroService;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,7 +24,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class TestTourGuideService {
-
+  @BeforeAll()
+  public static void Setup() {
+    Locale.setDefault(new Locale("us"));
+  }
 	@Test
 	public void getUserLocation() throws UUIDException {
 

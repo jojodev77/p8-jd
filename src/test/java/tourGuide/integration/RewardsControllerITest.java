@@ -16,6 +16,8 @@ import tourGuide.service.InternalTestService;
 import tourGuide.service.RewardsService;
 import tourGuide.service.TourGuideService;
 
+import java.util.Locale;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,6 +34,7 @@ public class RewardsControllerITest {
     @BeforeAll
     public void setupMockmvc() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webContext).build();
+      Locale.setDefault(new Locale("us"));
     }
 
     @Test

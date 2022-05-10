@@ -19,6 +19,8 @@ import tourGuide.microService.GpsUtilMicroService;
 import tourGuide.microService.RewardsMicroService;
 import tourGuide.microService.TripPricerMicroService;
 
+import java.util.Locale;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,6 +37,7 @@ public class TourGuideControllerITest {
     @BeforeAll
     public void setupMockmvc() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webContext).build();
+      Locale.setDefault(new Locale("us"));
     }
 
     @Test

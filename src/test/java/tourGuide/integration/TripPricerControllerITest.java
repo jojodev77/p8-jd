@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import tourGuide.helper.InternalTestHelper;
 
+import java.util.Locale;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,6 +31,7 @@ public class TripPricerControllerITest {
     @BeforeAll
     public void setupMockmvc() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webContext).build();
+      Locale.setDefault(new Locale("us"));
     }
 
     @Test

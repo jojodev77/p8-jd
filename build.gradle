@@ -37,6 +37,10 @@ dependencies {
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
   implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+  //SPRING CLOUD CONFIG
+  implementation 'org.springframework.cloud:spring-cloud-starter-config'
+  implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+  implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
   implementation('org.springframework.boot:spring-boot-starter-jdbc')
   runtimeOnly('com.h2database:h2')
   testImplementation 'org.springframework.boot:spring-boot-starter-test'

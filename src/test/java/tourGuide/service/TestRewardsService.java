@@ -1,5 +1,6 @@
 package tourGuide.service;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import tourGuide.entity.location.Attraction;
 import tourGuide.entity.location.VisitedLocation;
@@ -12,13 +13,17 @@ import tourGuide.microService.TripPricerMicroService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestRewardsService {
-
+  @BeforeAll()
+  public static void Setup() {
+    Locale.setDefault(new Locale("us"));
+  }
 	@Test
 	public void userGetRewards() {
 

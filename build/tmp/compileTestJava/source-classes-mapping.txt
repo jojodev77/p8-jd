@@ -1,0 +1,22 @@
+tourGuide/integration/TripPricerControllerITest.java
+ tourGuide.integration.TripPricerControllerITest
+tourGuide/integration/webClients/TripPricerlWebClientITest.java
+ tourGuide.integration.webClients.TripPricerlWebClientITest
+tourGuide/integration/LocationControllerITest.java
+ tourGuide.integration.LocationControllerITest
+tourGuide/integration/RewardsControllerITest.java
+ tourGuide.integration.RewardsControllerITest
+tourGuide/TestPerformance.java
+ tourGuide.TestPerformance
+tourGuide/integration/webClients/GpsUtilMicroServiceITest.java
+ tourGuide.integration.webClients.GpsUtilMicroServiceITest
+tourGuide/integration/webClients/RewardsMicroServiceITest.java
+ tourGuide.integration.webClients.RewardsMicroServiceITest
+tourGuide/service/TestRewardsService.java
+ tourGuide.service.TestRewardsService
+tourGuide/service/TestTourGuideService.java
+ tourGuide.service.TestTourGuideService
+tourGuide/integration/UserControllerITest.java
+ tourGuide.integration.UserControllerITest
+tourGuide/integration/TourGuideControllerITest.java
+ tourGuide.integration.TourGuideControllerITest
