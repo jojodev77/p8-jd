@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TourGuideService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TOURGUIDE</a> &gt; <a href="index.source.html" class="el_package">tourGuide.service</a> &gt; <span class="el_source">TourGuideService.java</span></div><h1>TourGuideService.java</h1><pre class="source lang-java linenums">package tourGuide.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import tourGuide.dto.UserPreferencesDTO;
+import tourGuide.entity.*;
+import tourGuide.entity.location.Attraction;
+import tourGuide.entity.location.VisitedLocation;
+import tourGuide.entity.trip.Provider;
+import tourGuide.exception.UserNameNotFoundException;
+import tourGuide.exception.UserNotPresent;
+import tourGuide.tracker.Tracker;
+import tourGuide.microService.GpsUtilMicroService;
+import tourGuide.microService.TripPricerMicroService;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.*;
+import java.util.stream.Collectors;
+
+@Service
+public class TourGuideService {
+<span class="nc" id="L26">	private Logger logger = LoggerFactory.getLogger(TourGuideService.class);</span>
+	private RewardsService rewardsService;
+	private GpsUtilMicroService gpsUtilMicroService;
+	private InternalTestService internalTestService;
+	private TripPricerMicroService tripPricerMicroService;
+<span class="nc" id="L31">	public Tracker tracker = new Tracker(this);</span>
+<span class="nc" id="L32">	boolean testMode = true;</span>
+<span class="nc" id="L33">	private final int nbNearestAttractions = 5;</span>
+
+<span class="nc" id="L35">	ExecutorService executorService = Executors.newFixedThreadPool(88);</span>
+
+	/**
+	 * Constructor of the class TourGuideService for initializing users
+	 * if testMode (default value = true) then initializeInternalUsers based on internalUserNumber value in
+	 * InternalTestHelper
+	 * Initialize Tracker
+	 * Ensure that the thread Tracker shuts down by calling addShutDownHook before closing the JVM
+	 * @param rewardsService
+	 */
+	public TourGuideService(RewardsService rewardsService, InternalTestService internalTestService,
+<span class="nc" id="L46">                          GpsUtilMicroService gpsUtilMicroService, TripPricerMicroService tripPricerMicroService) {</span>
+<span class="nc" id="L47">		this.rewardsService = rewardsService;</span>
+<span class="nc" id="L48">		this.internalTestService = internalTestService;</span>
+<span class="nc" id="L49">		this.gpsUtilMicroService = gpsUtilMicroService;</span>
+<span class="nc" id="L50">		this.tripPricerMicroService = tripPricerMicroService;</span>
+
+<span class="nc bnc" id="L52" title="All 2 branches missed.">		if(testMode) {</span>
+<span class="nc" id="L53">			logger.info(&quot;TestMode enabled&quot;);</span>
+<span class="nc" id="L54">			logger.debug(&quot;Initializing users&quot;);</span>
+<span class="nc" id="L55">			internalTestService.initializeInternalUsers();</span>
+<span class="nc" id="L56">			logger.debug(&quot;Finished initializing users&quot;);</span>
+		}
+		//Start the tracker
+<span class="nc" id="L59">		tracker.startTracking();</span>
+
+<span class="nc" id="L61">		addShutDownHook();</span>
+<span class="nc" id="L62">	}</span>
+
+	/**
+	 * Get a single user from InternalUserMap
+	 * @param userName
+	 * @return a user
+	 */
+	public User getUser(String userName) {
+<span class="nc bnc" id="L70" title="All 2 branches missed.">		if (userName == null) {</span>
+<span class="nc" id="L71">      throw new UserNameNotFoundException(userName);</span>
+    }
+
+<span class="nc" id="L74">    return internalTestService.internalUserMap.get(userName);</span>
+	}
+
+	/**
+	 * Get a list of all users from the InternalUserMap
+	 * @return a list of users
+	 */
+	public List&lt;User&gt; getAllUsers() {
+<span class="nc" id="L82">		return internalTestService.internalUserMap.values().stream().collect(Collectors.toList());</span>
+	}
+
+	/**
+	 * Get the UserRewards of the concerned user
+	 * @param user
+	 * @return a list of UserRewards
+	 */
+	public List&lt;UserRewardModel&gt; getUserRewards(User user) {
+<span class="nc" id="L91">		return user.getUserRewards();</span>
+	}
+
+	/**
+	 * Get the VisitedLocation of the concerned user
+	 * If user.getVisitedLocations size is greater than 0 then get the lastVisitedLocation
+	 * Else trackUserLocation
+	 * @param user
+	 * @return a visitedLocation
+	 */
+	public VisitedLocation getUserVisitedLocation(User user) {
+<span class="nc bnc" id="L102" title="All 2 branches missed.">    if (user == null) {</span>
+<span class="nc" id="L103">      throw  new UserNotPresent();</span>
+    }
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		VisitedLocation visitedLocation = (user.getVisitedLocations().size() &gt; 0) ?</span>
+<span class="nc" id="L106">			user.getLastVisitedLocation() :</span>
+<span class="nc" id="L107">			trackUserLocation(user);</span>
+<span class="nc" id="L108">		return visitedLocation;</span>
+	}
+
+	/**
+	 * Get a list of Trip Deals in a form of a list of Providers according to the user preferences
+	 * @param user the concerned user
+	 * @return list of Provider
+	 */
+	public List&lt;Provider&gt; getTripDeals(User user) {
+<span class="nc bnc" id="L117" title="All 2 branches missed.">    if (user == null) {</span>
+<span class="nc" id="L118">      throw  new UserNotPresent();</span>
+    }
+<span class="nc" id="L120">		int cumulativeRewardPoints = user.getUserRewards().stream().mapToInt(i -&gt; i.getRewardPoints()).sum();</span>
+
+<span class="nc" id="L122">		UUID userId = user.getUserId();</span>
+<span class="nc" id="L123">			List&lt;Provider&gt; providers = tripPricerMicroService.getPriceWebClient(internalTestService.tripPricerApiKey, userId,</span>
+<span class="nc" id="L124">					user.getUserPreferences().getNumberOfAdults(),</span>
+<span class="nc" id="L125">					user.getUserPreferences().getNumberOfChildren(),</span>
+<span class="nc" id="L126">					user.getUserPreferences().getTripDuration(), cumulativeRewardPoints);</span>
+<span class="nc" id="L127">			user.setTripDeals(providers);</span>
+<span class="nc" id="L128">		return providers;</span>
+	}
+
+	/**
+	 * Get the UserLocation from GpsUtil, add it to the visitedLocation and calculate the Rewards
+	 * @param user
+	 * @return the visited location of the random location of user
+	 */
+	public VisitedLocation trackUserLocation(User user) {
+<span class="nc bnc" id="L137" title="All 2 branches missed.">    if (user == null) {</span>
+<span class="nc" id="L138">      throw  new UserNotPresent();</span>
+    }
+<span class="nc" id="L140">		UUID userId = user.getUserId();</span>
+<span class="nc" id="L141">		VisitedLocation visitedLocation = gpsUtilMicroService.getUserLocationWebClient(userId);</span>
+<span class="nc" id="L142">		user.addToVisitedLocations(visitedLocation);</span>
+<span class="nc" id="L143">		rewardsService.calculateRewards(user);</span>
+<span class="nc" id="L144">		return visitedLocation;</span>
+	}
+
+	/**
+	 * Create an ExecutorService thread pool in which a runnable of trackUserLocation is executed
+	 * @param userList the list containing all users
+	 * @throws InterruptedException
+	 */
+	public void trackListUserLocation(List&lt;User&gt; userList) throws InterruptedException {
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		for (User user: userList) {</span>
+<span class="nc" id="L154">			Runnable runnable = () -&gt; {</span>
+<span class="nc" id="L155">				trackUserLocation(user);</span>
+<span class="nc" id="L156">			};</span>
+<span class="nc" id="L157">			executorService.execute(runnable);</span>
+<span class="nc" id="L158">		}</span>
+<span class="nc" id="L159">	}</span>
+
+	/**
+	 * Get a list of all user Locations from the existent GpsUtil list (tracking locations every X second)
+	 * @return a list of UserLocationModel containing all user ID's and location
+	 */
+	public List&lt;UserLocationModel&gt; getAllUsersLocation() {
+<span class="nc" id="L166">		List&lt;User&gt; userList = getAllUsers();</span>
+<span class="nc" id="L167">		List&lt;UserLocationModel&gt; userLocationList = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L169">		userList.forEach(u -&gt; {</span>
+<span class="nc" id="L170">			userLocationList.add(new UserLocationModel(u.getLastVisitedLocation().location, u.getUserId().toString()));</span>
+<span class="nc" id="L171">		});</span>
+
+<span class="nc" id="L173">		return userLocationList;</span>
+	}
+
+	/**
+	 * Get the closest 5 attractions of the user
+	 * @param visitedLocation
+	 * @return a list of attractions
+	 */
+	public List&lt;UserNearestAttractionsModel&gt; getNearestAttractions(VisitedLocation visitedLocation, User user) {
+
+<span class="nc" id="L183">		List&lt;Attraction&gt; attractions = gpsUtilMicroService.getAllAttractionsWebClient();</span>
+<span class="nc" id="L184">		List&lt;UserNearestAttractionsModel&gt; nearestAttractions = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L186">		List&lt;Future&gt; futuresList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		for (Attraction attraction : attractions) {</span>
+<span class="nc" id="L188">			Callable changeUserNearest = () -&gt; new UserNearestAttractionsModel(attraction.attractionName,</span>
+					attraction.longitude, attraction.latitude,
+<span class="nc" id="L190">					visitedLocation.location, rewardsService.getDistance(attraction, visitedLocation.location),</span>
+<span class="nc" id="L191">					rewardsService.getRewardPoints(attraction, user));</span>
+<span class="nc" id="L192">			Future mapUserNearestAttractions = executorService.submit(changeUserNearest);</span>
+<span class="nc" id="L193">			futuresList.add(mapUserNearestAttractions);</span>
+<span class="nc" id="L194">		};</span>
+
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		for (Future future: futuresList) {</span>
+<span class="nc" id="L197">			UserNearestAttractionsModel at = null;</span>
+			try {
+<span class="nc" id="L199">				at = (UserNearestAttractionsModel) future.get();</span>
+<span class="nc" id="L200">			} catch (InterruptedException e) {</span>
+<span class="nc" id="L201">				e.printStackTrace();</span>
+<span class="nc" id="L202">			} catch (ExecutionException e) {</span>
+<span class="nc" id="L203">				e.printStackTrace();</span>
+<span class="nc" id="L204">			}</span>
+<span class="nc" id="L205">			nearestAttractions.add(at);</span>
+<span class="nc" id="L206">		}</span>
+
+<span class="nc" id="L208">		List&lt;UserNearestAttractionsModel&gt; listAttractionsSorted = nearestAttractions</span>
+<span class="nc" id="L209">				.stream()</span>
+<span class="nc" id="L210">				.sorted(Comparator.comparing(UserNearestAttractionsModel::getAttractionProximityRangeMiles))</span>
+<span class="nc" id="L211">				.limit(nbNearestAttractions)</span>
+<span class="nc" id="L212">				.collect(Collectors.toList());</span>
+
+<span class="nc" id="L214">		return listAttractionsSorted;</span>
+	}
+
+	/**
+	 * Add a shut down hook for stopping the Tracker thread before shutting down the JVM
+	 */
+	private void addShutDownHook() {
+<span class="nc" id="L221">		Runtime.getRuntime().addShutdownHook(new Thread() {</span>
+		      public void run() {
+<span class="nc" id="L223">		        tracker.stopTracking();</span>
+<span class="nc" id="L224">		      }</span>
+		    });
+<span class="nc" id="L226">	}</span>
+
+	/**
+	 * Sets the user preferences with the new user preferences from UserPreferencesDTO
+	 *
+	 * @param userPreferencesDTO
+	 * @return new UserPreferences
+	 */
+	public UserPreferencesModel userUpdatePreferences (String userName, UserPreferencesDTO userPreferencesDTO) {
+<span class="nc" id="L235">		User user= getUser(userName);</span>
+<span class="nc" id="L236">		user.setUserPreferences(new UserPreferencesModel(userPreferencesDTO));</span>
+<span class="nc" id="L237">		return user.getUserPreferences();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

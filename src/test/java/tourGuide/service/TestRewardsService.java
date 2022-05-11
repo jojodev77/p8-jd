@@ -2,6 +2,8 @@ package tourGuide.service;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
 import tourGuide.entity.location.Attraction;
 import tourGuide.entity.location.VisitedLocation;
 import tourGuide.helper.InternalTestHelper;
@@ -11,6 +13,7 @@ import tourGuide.microService.GpsUtilMicroService;
 import tourGuide.microService.RewardsMicroService;
 import tourGuide.microService.TripPricerMicroService;
 
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -24,7 +27,9 @@ public class TestRewardsService {
   public static void Setup() {
     Locale.setDefault(new Locale("us"));
   }
-	@Test
+  @LoadBalanced
+  @Bean
+  @Test
 	public void userGetRewards() {
 
 
@@ -55,6 +60,8 @@ public class TestRewardsService {
 		assertTrue(rewardsService.isWithinAttractionProximity(attraction, attraction));
 	}
 
+  @LoadBalanced
+  @Bean
 	@Test
 	public void nearAttraction() {
 		GpsUtilMicroService gpsUtilMicroService = new GpsUtilMicroService();

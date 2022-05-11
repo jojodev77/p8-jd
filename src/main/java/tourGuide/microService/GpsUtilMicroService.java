@@ -1,6 +1,8 @@
 package tourGuide.microService;
 
 import gpsUtil.GpsUtil;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,6 +19,12 @@ import java.util.UUID;
 
 @Service
 public class GpsUtilMicroService {
+
+  @Bean
+  @LoadBalanced
+  public RestTemplate restTemplate() {
+    return new RestTemplate();
+  }
 
     // Declare the base url (for docker deployment)
     private final String BASE_URL = "http://localhost:8081";
@@ -40,8 +48,9 @@ public class GpsUtilMicroService {
         return BASE_URL + PATH_ALL_ATTRACTIONS;
     }
 
+
     public VisitedLocation getUserLocationWebClient(UUID userId) {
-        RestTemplate restTemplate = new RestTemplate();
+    //  RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -49,7 +58,7 @@ public class GpsUtilMicroService {
         VisitedLocation visitedLocation;
 
         ResponseEntity<VisitedLocation> result  =
-                restTemplate.getForEntity(getUserLocationGpsUtilUri() +
+          restTemplate().getForEntity(getUserLocationGpsUtilUri() +
                                 USER_ID +
                                 userId
                         ,VisitedLocation.class);
@@ -57,12 +66,13 @@ public class GpsUtilMicroService {
         return visitedLocation;
     }
 
+
     public List<Attraction> getAllAttractionsWebClient() {
-        RestTemplate restTemplate = new RestTemplate();
+       // RestTemplate restTemplate = new RestTemplate();
         List<Attraction> attractionList;
 
         ResponseEntity<List<Attraction>> result =
-                restTemplate.exchange(getAllAttractionsGpsUtilUri(),
+          restTemplate().exchange(getAllAttractionsGpsUtilUri(),
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Attraction>>() {
                         });
         attractionList= result.getBody();

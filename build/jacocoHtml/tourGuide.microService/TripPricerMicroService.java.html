@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TripPricerMicroService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TOURGUIDE</a> &gt; <a href="index.source.html" class="el_package">tourGuide.microService</a> &gt; <span class="el_source">TripPricerMicroService.java</span></div><h1>TripPricerMicroService.java</h1><pre class="source lang-java linenums">package tourGuide.microService;
+
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import tourGuide.entity.trip.Provider;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+<span class="nc" id="L16">public class TripPricerMicroService {</span>
+
+    // Declare the base url (for docker deployment)
+<span class="nc" id="L19">    private final String BASE_URL = &quot;http://pricer:8083&quot;;</span>
+    // Declare the base url (for localhost)
+<span class="nc" id="L21">    private final String BASE_URL_LOCALHOST = &quot;http://localhost:8083&quot;;</span>
+    // Declare the path
+<span class="nc" id="L23">    private final String PATH = &quot;/getPrice&quot;;</span>
+    //Declare the apiKey name to use in the request of the Rest Template Web Client
+<span class="nc" id="L25">    private final String API_KEY = &quot;?apiKey=&quot;;</span>
+    //Declare the AttractionId name to use in the request of the Rest Template Web Client
+<span class="nc" id="L27">    private final String ATTRACTION_ID = &quot;&amp;attractionId=&quot;;</span>
+    //Declare the adults name to use in the request of the Rest Template Web Client
+<span class="nc" id="L29">    private final String ADULTS = &quot;&amp;adults=&quot;;</span>
+    //Declare the children name to use in the request of the Rest Template Web Client
+<span class="nc" id="L31">    private final String CHILDREN = &quot;&amp;children=&quot;;</span>
+    //Declare the nightsStay name to use in the request of the Rest Template Web Client
+<span class="nc" id="L33">    private final String NIGHT_STAY = &quot;&amp;nightsStay=&quot;;</span>
+    //Declare the rewardsPoints name to use in the request of the Rest Template Web Client
+<span class="nc" id="L35">    private final String REWARDS_POINTS = &quot;&amp;rewardsPoints=&quot;;</span>
+
+
+    //Define the trip Pricer URI
+    private final String getPriceTripPricerUri() {
+<span class="nc" id="L40">        return BASE_URL + PATH;</span>
+    }
+
+  @LoadBalanced
+  @Bean
+    public List&lt;Provider&gt; getPriceWebClient(String apiKey, UUID attractionId, int adults, int children, int nightsStay,
+                                            int rewardsPoints) {
+<span class="nc" id="L47">        RestTemplate restTemplate = new RestTemplate();</span>
+        List&lt;Provider&gt; listProvider;
+
+<span class="nc" id="L50">        ResponseEntity&lt;List&lt;Provider&gt;&gt; result =</span>
+<span class="nc" id="L51">                restTemplate.exchange(getPriceTripPricerUri()</span>
+                                + API_KEY + apiKey
+                                + ATTRACTION_ID + attractionId
+                                + ADULTS + adults
+                                + CHILDREN + children
+                                + NIGHT_STAY + nightsStay
+                                + REWARDS_POINTS + rewardsPoints,
+<span class="nc" id="L58">                        HttpMethod.GET, null, new ParameterizedTypeReference&lt;List&lt;Provider&gt;&gt;() {</span>
+                        });
+<span class="nc" id="L60">        listProvider= result.getBody();</span>
+<span class="nc" id="L61">        return listProvider;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,5 +1,7 @@
 package tourGuide.microService;
 
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,7 @@ import java.util.UUID;
 public class TripPricerMicroService {
 
     // Declare the base url (for docker deployment)
-    private final String BASE_URL = "http://pricer:8083";
+    private final String BASE_URL = "http://localhost:8083";
     // Declare the base url (for localhost)
     private final String BASE_URL_LOCALHOST = "http://localhost:8083";
     // Declare the path
@@ -37,6 +39,7 @@ public class TripPricerMicroService {
     private final String getPriceTripPricerUri() {
         return BASE_URL + PATH;
     }
+
 
     public List<Provider> getPriceWebClient(String apiKey, UUID attractionId, int adults, int children, int nightsStay,
                                             int rewardsPoints) {

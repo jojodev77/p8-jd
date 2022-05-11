@@ -55,7 +55,7 @@ public class TestPerformance {
 		InternalTestService internalTestService = new InternalTestService();
 		InternalTestHelper internalTestHelper = new InternalTestHelper();
 		// Users should be incremented up to 100,000, and test finishes within 15 minutes
-		internalTestHelper.setInternalUserNumber(100000);
+		internalTestHelper.setInternalUserNumber(1000);
 		GpsUtilMicroService gpsUtilMicroService = new GpsUtilMicroService();
 		TripPricerMicroService tripPricerMicroService = new TripPricerMicroService();
 		RewardsMicroService rewardsMicroService = new RewardsMicroService();
@@ -107,7 +107,7 @@ public class TestPerformance {
 		stopWatch.start();
 		InternalTestService internalTestService = new InternalTestService();
 		InternalTestHelper internalTestHelper = new InternalTestHelper();
-		internalTestHelper.setInternalUserNumber(10000);
+		internalTestHelper.setInternalUserNumber(1000);
 
 		GpsUtilMicroService gpsUtilMicroService = new GpsUtilMicroService();
 		TripPricerMicroService tripPricerMicroService = new TripPricerMicroService();

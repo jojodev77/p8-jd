@@ -45,6 +45,8 @@ tourGuide/Application.java
  tourGuide.Application
 tourGuide/controller/RewardsController.java
  tourGuide.controller.RewardsController
+tourGuide/config/WebClientConfiguration.java
+ tourGuide.config.WebClientConfiguration
 tourGuide/service/InternalTestService.java
  tourGuide.service.InternalTestService
 tourGuide/exception/UserNotPresent.java
@@ -53,5 +55,7 @@ tourGuide/entity/User.java
  tourGuide.entity.User
 tourGuide/tracker/Tracker.java
  tourGuide.tracker.Tracker
+tourGuide/microService/RestTemplateClient.java
+ tourGuide.microService.RestTemplateClient
 tourGuide/exception/UUIDException.java
  tourGuide.exception.UUIDException
