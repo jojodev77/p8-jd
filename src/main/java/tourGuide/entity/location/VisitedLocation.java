@@ -1,8 +1,11 @@
 package tourGuide.entity.location;
 
+import lombok.Data;
+
 import java.util.Date;
 import java.util.UUID;
 
+@Data
 public class VisitedLocation {
     public UUID userId;
     public Location location;

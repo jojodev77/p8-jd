@@ -1,5 +1,8 @@
 package tourGuide.entity.location;
 
+import lombok.Data;
+
+@Data
 public class Location {
     public double longitude;
     public double latitude;

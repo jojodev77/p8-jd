@@ -28,7 +28,7 @@ jobs:
           - $HOME/.gradle/caches/
           - $HOME/.gradle/wrapper/
       script:
-        - gradlew clean build
+        - gradlew  build
 
     - stage: test
         script:
@@ -36,7 +36,7 @@ jobs:
           -
     - stage: run
       before_install:
-        - docker build --build-arg JAR_FILE="build/libs/*.jar" -t gpsUtil .
+        - docker build --build-arg JAR_FILE="build/libs/*.jar" -t gpsUtilMicroService .
       script:
           - docker run -p 8085:8085 tourguide
 
