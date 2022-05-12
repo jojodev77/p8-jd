@@ -1,5 +1,6 @@
 
-P8 Jonathan de la osa: TOURGUIDE
+P8 Jonathan de la osa: TOURGUIDE<br/>
+MicroService: Tourguide <br/>
 ## *Architecture *
 Patterns-microservices-springcloud <br/>
 Spring boot gradle <br/>
@@ -26,7 +27,7 @@ RewardMicroService: Port: 8082 <br/>
 TripMasterMicroService: Port 8083 <br/>
 *********************
 ##*Docker command:*
-docker build -t "MicroService"+:VERSION
-docker run -p "port" + "MicroService" or
+docker build -t "MicroService"+:VERSION <br/>
+docker run -p "port" + "MicroService" or <br/>
 docker-compose up
 *********************
